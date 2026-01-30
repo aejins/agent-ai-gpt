@@ -2,7 +2,7 @@ name: Crypto AI GPT News Agent
 
 on:
   schedule:
-    - cron: "0 9 * * *"   # codziennie 09:00 UTC+1 w Polsce
+    - cron: "0 9 * * *"   # codziennie 09:00 UTC
   workflow_dispatch:
 
 jobs:
@@ -18,13 +18,10 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+      - name: Install dependencies (OpenAI 0.28.0 for backward compatibility)
         run: |
-          pip install requests feedparser openai
+          pip install --upgrade pip
+          pip install requests feedparser openai==0.28.0
 
       - name: Run GPT crypto news bot
-        run: |
-          python crypto_bot_gpt.py
         env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
