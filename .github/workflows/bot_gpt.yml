@@ -1,0 +1,30 @@
+name: Crypto AI GPT News Agent
+
+on:
+  schedule:
+    - cron: "0 9 * * *"   # codziennie 09:00 UTC+1 w Polsce
+  workflow_dispatch:
+
+jobs:
+  run-gpt-agent:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install requests feedparser openai
+
+      - name: Run GPT crypto news bot
+        run: |
+          python crypto_bot_gpt.py
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
